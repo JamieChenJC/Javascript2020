@@ -2,16 +2,18 @@
 window.onload = function ()
 {
 
+var myStorage = window.localStorage;
+
 var addTaskBtn = document.querySelector('#addTask');
 var deleteAllTaskBtn = document.querySelector('#deleteAllTask');
 var taskText = document.querySelector('#taskText');
 var taskUl =  document.querySelector('.list-group');
-var taskList = [];
+
+var taskList = (myStorage.getItem('list') != null ? JSON.parse( myStorage.getItem('list')) : [] );
 
 
 //綁定Ul的click事件，當觸發的dataset.index是有值的，就進行刪除任務的動作
 taskUl.addEventListener('click', function(e){
-    console.log(e)
     if ( e.target.dataset.action == 'delete')
         deleteTask(e.target.dataset.index);
     else if ( e.target.dataset.action == 'deleteAll')
@@ -20,32 +22,36 @@ taskUl.addEventListener('click', function(e){
         completeTask(e.target.dataset.index);
 });
 
-
 //綁定新增按鈕的click事件，當觸發時，檢查taskText，如果是空白就不能新增
-addTaskBtn.addEventListener('click', function(){
-    if ( taskText.value != "")
-        createTask(taskText.value);
-    else
-        alert("請輸入任務內容");
-});
-
+addTaskBtn.addEventListener('click', createTask);
 //綁定刪除全部按鈕的click事件，當觸發時，檢查taskText，如果是空白就不能新增
-deleteAllTaskBtn.addEventListener('click', function(){
-    deleteAllTask();
-});
+deleteAllTaskBtn.addEventListener('click',deleteAllTask);
 
 //新增任務
-function createTask(taskStr)
+function createTask()
 {
-    var taskObj = { 'done':false, 'task': taskStr };
-    taskList.push(taskObj);
-    reload();
+    if ( taskText.value != "")
+    {
+        var taskObj = { 'done':false, 'task': taskText.value  };
+        taskList.push(taskObj);
+
+        //save to localStorage
+        myStorage.setItem('list', JSON.stringify(taskList));
+
+        reload();
+    }
+    else
+    {
+        alert("請輸入任務內容");
+    }
 }
 
 //完成任務
 function completeTask(index)
 {
     taskList[index].done = !taskList[index].done;
+    //save to localStorage
+    myStorage.setItem('list', JSON.stringify(taskList));
     reload();
 }
 
@@ -53,6 +59,8 @@ function completeTask(index)
 function deleteTask(index)
 {
     taskList.splice(index, 1);
+    //save to localStorage
+    myStorage.setItem('list', JSON.stringify(taskList));
     reload();
 }
 
@@ -60,6 +68,8 @@ function deleteTask(index)
 function deleteAllTask()
 {
     taskList=[];
+    //save to localStorage
+    myStorage.clear();
     reload();
 }
 
@@ -73,7 +83,6 @@ function listTemplate(taskObj, taskIndex)
         <button type="button" class="close"><i class="fa fa-trash" aria-hidden="true" data-action='delete' data-index=${taskIndex} ></i></button>
     </li>`;
 }
-
 
 //重新載入任務
 function reload()
