@@ -38,6 +38,9 @@ function createTask()
         //save to localStorage
         myStorage.setItem('list', JSON.stringify(taskList));
 
+        //清除輸入
+        taskText.value ='';
+
         reload();
     }
     else
