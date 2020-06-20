@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>第一週主線任務 - To do list</title>
+    <!-- bootstrap css-->
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://use.fontawesome.com/12f0bd13d9.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+  <div class="container d-flex  w-100 h-100 flex-column">
+     <!-- 標題 -->
+    <header class="header mb-3 text-center text-light">
+      <h1>To Do List</h1>
+    </header>
+    <!--主內容 -->
+    <main>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="請輸入待辦事項" aria-label="Recipient's username" aria-describedby="button-addon2" id="taskText">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="addTask">新增任務</button>
+        </div>
+      </div>
+    
+      <ul class="list-group">
+      </ul>
+      <div class="text-light mt-3">
+              待處理：<span class='waitTodo'>0</span> 件
+             <button type="button" class="close text-light" id='deleteAllTask'> Delete All</button>
+      </div>
+    </main>
+
+    <!-- 標題 -->
+    <footer class="footer  mt-auto text-center text-light">
+        <h3>js作品實戰班-2020夏季-第一週作業</h3>
+    </footer>
+
+  </div>
+</body>
+</html>
