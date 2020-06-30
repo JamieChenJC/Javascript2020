@@ -6,7 +6,6 @@
       products: [],
     },
     getData: function() {
-      console.log(this);
       var vm = this;
       var url = `https://course-ec-api.hexschool.io/api/${this.data.uuid}/ec/products`;
 
@@ -15,9 +14,12 @@
 
       axios.get(url)
         .then(function (response) {
-        vm.data.products = response.data.data;
-        vm.sortData();
-      })
+          vm.data.products = response.data.data;
+          vm.sortData();
+        })
+        .catch(function (error) {
+          console.log('串接API發生錯誤', error);
+        })
     },
     sortData: function() {
       const sortWay = document.getElementById('productSort').value;
@@ -80,19 +82,17 @@
     }
   }
 
-window.onload = function ()
-{ 
-  obj.getData();
 
-  //監聽事件
+
+//監聽事件
   document.getElementById('productSort').addEventListener('change',
-   function(e){
+    function(e){
     obj.getData();
   });
 
   document.getElementById('keySearch').addEventListener('click',
-  function(e){
-   obj.getData();
+    function(e){
+    obj.getData();
   });
 
   document.querySelector('.nav-sort').addEventListener('click', function(e){
@@ -101,9 +101,12 @@ window.onload = function ()
       item.classList.remove("active");
     });
     e.target.classList.add("active");
-    
+
     obj.data.category = e.target.dataset.category;
     obj.getData();
   });
 
-};
+
+//取得資料
+obj.getData();
+
