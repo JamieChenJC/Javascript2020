@@ -151,12 +151,16 @@ var app = new Vue({
             this.products.forEach((element, index )=> {
                 if ( element.id === this.tempData.id)
                 {
-                  this.products[index] = this.tempData;
+                 // this.products[index] = this.tempData;
+
+                  //https://pjchender.blogspot.com/2017/05/vue-vue-reactivity.html
+                  //試著使用$set
+                  this.$set(this.products, index, this.tempData);
                 }
             });
           }
 
-          this.tempData = { imageUrl:[], options: { products:[] } };
+          //this.tempData = { imageUrl:[], options: { products:[] } };
 
           $('#editModel').modal('hide');
           
