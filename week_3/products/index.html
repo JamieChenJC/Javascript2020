@@ -45,7 +45,7 @@
             <div style="margin-left: 200px;">
                 <main class=" mr-5">
                     <div class="text-right mb-3">
-                        <button class="btn btn-primary" @click="Action('Add')"> 建立新的產品</button>
+                        <button type="button" class="btn btn-primary" @click="Action('Add')"> 建立新的產品</button>
                     </div>
 
                     <table class="table">
@@ -114,7 +114,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                <button class="btn btn-primary btn-sm" @click="AddImage()">新增圖片</button>
+                                <button type="button" class="btn btn-primary btn-sm" @click="AddImage()">新增圖片</button>
                                 </div>
                                 <template  v-for="(item, key) in tempData.imageUrl">
                                     <div class="form-group" :key="key">
@@ -169,7 +169,7 @@
                                     <select v-model="optionIndex">
                                         <option :value="key" v-for="(item, key) in products ">{{ item.title }}</option>
                                     </select>
-                                    <button class="btn btn-primary btn-sm" @click="AddOptions()">新增加購項目</button>
+                                    <button type="button" class="btn btn-primary btn-sm" @click="AddOptions()">新增加購項目</button>
 
                                     <template v-for="(item, key) in tempData.options.products">
                                         <div class="form-group" :key="key">
