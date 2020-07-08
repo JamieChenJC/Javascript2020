@@ -101,7 +101,7 @@ var app = new Vue({
           switch(action)
           {
             case 'Add':
-              this.modalOption.modalTitle="編輯產品";
+              this.modalOption.modalTitle="新增產品";
               this.modalOption.isNew = true;
               $('#editModel').modal('show');
             break;
