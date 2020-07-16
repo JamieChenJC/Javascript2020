@@ -142,11 +142,11 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="origin_price">原價</label>
-                                        <input type="number" class="form-control" id="origin_price" type='number' placeholder="請輸入原價" v-model="tempData.origin_price">
+                                        <input type="number" class="form-control" id="origin_price" placeholder="請輸入原價" v-model="tempData.origin_price">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="productsPrice">售價</label>
-                                        <input type="number" class="form-control" id="productsPrice" type='number' placeholder="請輸入售價" v-model="tempData.price">
+                                        <input type="number" class="form-control" id="productsPrice" placeholder="請輸入售價" v-model="tempData.price">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -175,7 +175,7 @@
                                         <div class="form-group" :key="key">
                                             <label>{{item.title}}</label>
                                             <label>原價：<span style='font-family: Arial;' >{{item.origin_price}} </span></label>
-                                            <label>加購價：<input type="number" style='font-family: Arial;' type='number' placeholder="請輸入加購價" v-model="item.price"></label>
+                                            <label>加購價：<input type="number" style='font-family: Arial;' placeholder="請輸入加購價" v-model="item.price"></label>
                                         </div>
                                     </template>
                                 </div>

@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
+
+html, body {
+    height : 100%;
+    font-family: 'Yellowtail', cursive;
+    font-size: 18px;
+}
+
+.backend-tatle
+{
+    font-weight: 500;
+    color: black;
+    font-size: 40px;
+   
+}
+
+.backend-menu
+{
+    width: 200px;
+    font-size: 20px;
+    clear: black;
+}
+
+.backend-menu .nav-link.active  {
+    border-left: .25rem solid #f5a637;
+}
+
+.backend-menu .nav-link:hover {
+    color: #f5a637;
+    font-weight: 700;
+}
+
+@keyframes change{
+    0%{ opacity: 1;}
+    100%{ opacity: 0;}
+}
+
+.alertMsg{
+    position: fixed;
+    z-index: 9999;
+    right: 10px;
+    bottom: 10px;
+}
+
+.alretBox{  
+    position: fixed;
+    bottom: 10px;
+    animation: change 5s;
+    animation-fill-mode:forwards;
+}
+
+.form-control{
+    font-family: Arial;
+}
+
+.button-box,
+.price-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.navbar-light .navbar-nav .active>.nav-link,
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #f5a637;
+    font-weight: 700;
+}
+
+.nav-sort .nav-link {
+    font-weight: 700;
+    color: black;
+    background-color: transparent;
+    border-bottom: .25rem solid transparent;
+}
+
+.nav-sort .nav-link.active  {
+    border-bottom-color: #f5a637;
+}
+
+
+.loading-background
+{
+    z-index: 9998;
+    background-color: rgba(238, 238, 238, 0.5);
+    top: 0;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+}
