@@ -38,7 +38,6 @@ var app = new Vue({
         //('對應傳送端的emit方法','接收的參數')
         this.$bus.$on('cartLoging', (para)=>{
           this.cartLoging = para;
-          this.isLoading = para;
         });
 
         //('對應傳送端的emit方法','接收的參數')

@@ -67,12 +67,12 @@ Vue.component('cartModelTemplate', {
         this.getCart();
     },
     methods:{
-        getCart() {
+        async getCart() {
             const url = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/ec/shopping`;
 
             this.$bus.$emit('cartLoging', true);
 
-           return axios.get(url).then((response) => {
+            await axios.get(url).then((response) => {
                 this.cart.list = response.data.data;
                 this.cart.totalPrice = 0;
                 // 累加總金額
@@ -83,6 +83,8 @@ Vue.component('cartModelTemplate', {
                 this.$bus.$emit('cartLoging', false);
                 this.$bus.$emit('updatacart', this.cart );
             });
+
+            return true;
         },
         updataQuantity(id, number = 0){
             // 避免商品數量低於 0 個
@@ -100,8 +102,9 @@ Vue.component('cartModelTemplate', {
             };
 
             axios.patch(url, data).then(() => {
-                this.$bus.$emit('isLoading', false);
-                this.getCart();
+                this.getCart().then(ret => {
+                    this.$bus.$emit('isLoading', false);
+                })
             });
         },
         deleteProduct(id){
@@ -115,8 +118,9 @@ Vue.component('cartModelTemplate', {
             }
 
             axios.delete(url).then(() => {
-                this.$bus.$emit('isLoading', false);
-                this.getCart();
+                this.getCart().then(ret => {
+                    this.$bus.$emit('isLoading', false);
+                })
             });
         }
     }
