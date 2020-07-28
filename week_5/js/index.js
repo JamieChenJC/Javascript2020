@@ -4,6 +4,12 @@ Vue.prototype.$bus = new Vue();
 
 Vue.component('loading', VueLoading); //全域註冊
 
+Vue.filter('toCurrency', function (num) {
+  var parts = num.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return '$' + parts.join('.');
+});
+
 var app = new Vue({
       // 將 Vue 綁定我們所自訂的元素上
       el: '#app',

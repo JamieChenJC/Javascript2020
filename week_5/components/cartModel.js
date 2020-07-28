@@ -20,7 +20,7 @@ Vue.component('cartModelTemplate', {
                             <div class="w-100">
                                 <div>
                                     <h6>{{item.product.title}}</h6>
-                                    <strong class="text-sm">$ {{ item.product.price }}</strong>
+                                    <strong class="text-sm">{{ item.product.price | toCurrency }}</strong>
                                     <small class="d-block text-muted">
                                     <button type="button" class="btn btn-link" @click='updataQuantity(item.product.id, item.quantity-1)'><i class="fa fa-minus"></i></button>
                                     {{item.quantity}}
@@ -35,7 +35,7 @@ Vue.component('cartModelTemplate', {
                     <strong class="text-sm">購物車是空的</strong>
                 </div>
                 <div class="modal-footer">
-                <strong class="text-left text-sm">總計$ {{ cart.totalPrice }}</strong>
+                <strong class="text-left text-sm">總計 {{ cart.totalPrice | toCurrency }}</strong>
                 <a class="btn btn-warning" href="order.html" role="button">前往結帳</a>
                 </div>
             </div>

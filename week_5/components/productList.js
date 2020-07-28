@@ -6,8 +6,8 @@ Vue.component('productListTemplate', {
                 <h5 class='ml-2'>{{ item.title }}</h5>
                 <p class='ml-2'>{{ item.content }}</p>
                 <div class='col-12 price-box'> 
-                    <del>TWD{{ item.origin_price }}</del> 
-                    <span>優惠 {{ item.price }}</span>
+                    <del>TWD{{ item.origin_price | toCurrency }}</del> 
+                    <span>優惠 {{ item.price | toCurrency }}</span>
                 </div>
                 <div class='col-12 button-box mb-3'> 
                     <button type='button' class='btn btn-outline-warning'>查看更多</button>
