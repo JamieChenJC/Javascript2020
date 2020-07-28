@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- Lastly add this package -->
+    <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+    <title>Coffee In </title>
+</head>
+<body>
+    <div class="d-flex  w-100 h-100 flex-column" id='app'>
+
+        <!-- Loading... -->
+        <loading :active.sync="isLoading"></loading>
+
+        <!-- 選單 -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow ">
+                <div class="container">
+                    <a class="navbar-brand d-lg-none" href="#">
+                        <img src="logo.png" alt="Coffeein" style="width:167px">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">首頁</a>
+                            </li>
+                            <li class="nav-item">
+                                    <a class="nav-link" href="#">活動頁面</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">產品列表</a>
+                            </li>
+                        </ul>
+                        <a class="navbar-brand d-none d-md-block" href="#" style="transform: translateX(-50%);">
+                                <img src="logo.png" alt="Coffeein" style="width:167px">
+                        </a>
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#" @click='openCart'>
+                                    <div style="position: relative;" :class="{'spinner-border text-warning': cartLoging}">
+                                        <i class="fa fa-shopping-cart fa-lg" aria-hidden="true" :class="{'d-none': cartLoging}"></i>
+                                        <span class="badge badge-pill badge-warning" style="top: -6px;position: absolute;" :class="{'d-none': cartLoging}">{{cart.list.length}}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+    
+        <!-- 內容區塊 -->
+        <div class="container">
+            <div class="row mb-3 mt-3">
+                <div class="col">
+                    <div class="h4 text-center">購 物 車 清 單</div>
+                    
+                    <div class="text-right mb-3" v-if="cart.list.length">
+                        <button type="button" class="btn btn-sm btn-outline-danger" @click='deleteProduct()'><i class="fa fa-trash"></i>刪除所有商品</button>
+                    </div>
+
+                    <table class="table" v-if="cart.list.length">
+                        
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">商品名稱</th>
+                            <th scope="col">單價</th>
+                            <th scope="col">數量</th>
+                            <th scope="col">小計</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr  v-for='(item, key) in cart.list' :key='key'>
+                            <th><button type="button" class="btn btn-sm btn-outline-danger" @click='deleteProduct(item.product.id)'><i class="fa fa-trash"></i></button></th>
+                            <td>
+                                <img  style='width:50px' :src="item.product.imageUrl[0]" class="my-auto mr-3" :alt="item.product.title">
+                                {{item.product.title}}
+                            </td>
+                            <td>{{ item.product.price | toCurrency }}</td>
+                            <td>
+                                <button type="button" class="btn btn-link" @click='updataQuantity(item.product.id, item.quantity-1)'><i class="fa fa-minus"></i></button>
+                                {{item.quantity}}
+                                <button type="button" class="btn btn-link" @click='updataQuantity(item.product.id, item.quantity+1)'><i class="fa fa-plus"></i></button>
+                            </td>
+                                   
+                            <td>{{ (item.quantity *  item.product.price) | toCurrency }} </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-right">
+                            總計 {{ cart.totalPrice | toCurrency }}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div class="text-center" v-else>
+                        尚未選擇任何商品，請至<a href="index.html">產品列表</a>選購
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-5 row mb-3"v-if="cart.list.length">
+                <div class="col">
+                    <div class="h4 text-center">訂  單  資  訊</div>
+                    <validation-observer v-slot="{ invalid }">
+                        <form class="needs-validation" @submit.prevent="submitForm">
+                            <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <validation-provider name="收件人姓名" rules="required" v-slot="{ errors, classes }">
+                                    <!-- 輸入框 -->
+                                    <label for="name">收件人姓名</label>
+                                    <input type="text" class="form-control" id="name" v-model="form.name" :class="classes">
+                                    <!-- 錯誤訊息 -->
+                                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                                </validation-provider>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <validation-provider name="收件人電話" rules="required||min:8" v-slot="{ errors, classes }">
+                                    <!-- 輸入框 -->
+                                    <label for="tel">收件人電話</label>
+                                    <input type="tel" class="form-control" id="tel" v-model="form.tel" :class="classes">
+                                    <!-- 錯誤訊息 -->
+                                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                                </validation-provider>
+                            </div>
+                            </div>
+                            <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <validation-provider name="Email" rules="required|email" v-slot="{ errors, classes }">
+                                    <!-- 輸入框 -->
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" v-model="form.email" :class="classes">
+                                    <!-- 錯誤訊息 -->
+                                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                                </validation-provider>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <validation-provider name="地址" rules="required" v-slot="{ errors, classes }">
+                                    <!-- 輸入框 -->
+                                    <label for="address">地址</label>
+                                    <input type="text" class="form-control" id="address"  v-model="form.address" :class="classes">
+                                    <!-- 錯誤訊息 -->
+                                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                                </validation-provider>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                                <validation-provider name="購買方式" rules="required" v-slot="{ errors, classes }">
+                                    <!-- 輸入框 -->
+                                    <label for="payment">購買方式</label>
+                                    <select  class="custom-select" id="payment" v-model="form.payment" :class="classes">
+                                        <option value="" disabled>請選擇付款方式</option>
+                                        <option value="WebATM">WebATM</option>
+                                        <option value="ATM">ATM</option>
+                                        <option value="CVS">CVS</option>
+                                        <option value="Barcode">Barcode</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="ApplePay">ApplePay</option>
+                                        <option value="GooglePay">GooglePay</option>
+                                    </select>
+                                    <!-- 錯誤訊息 -->
+                                    <span class="invalid-feedback">{{ errors[0] }}</span>
+                                </validation-provider>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">留言</label>
+                                <textarea id="message" class="form-control" cols="30" rows="3" v-model="form.message" >
+                            </textarea>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary" :disabled="invalid">送出表單</button>
+                            </div>
+                        </form>     
+                    </validation-observer>
+                </div>
+            </div>
+
+            <!-- 提示訊息-->
+            <div class="d-flex justify-content-center w-100 alertMsg" ></div>
+            <!-- 購物車 -->
+            <cart-Model-Template :user="user"></cart-Model-Template>
+        </div>
+        
+        <!-- 底部 -->
+        <footer class="footer  mt-auto text-center">
+            <p>  僅個人練習使用．不做商業用途</p>
+            <p style="font-size: .875rem;">js作品實戰班-2020夏季 作品實戰班-作業<br/>
+            Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>.<br/>
+            Logo通過<a href="https://www.designevo.com/tw/logo-maker/" title="免費線上logo製作軟體">DesignEvo</a>設計製作.</p>
+        </footer>
+    </div> <!-- <div class="d-flex  w-100 h-100 flex-column" id='app'> -->
+
+    <!-- 載入javascript -->
+    <script src="https://use.fontawesome.com/12f0bd13d9.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.9/dist/vue.js"></script>
+    <!-- Lastly add this package -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
+    <!-- 購物車元件 -->
+    <script src='../components/cartModel.js'></script>
+    <script type="module"  src="../js/order.js"></script>
+</body>
+</html>
