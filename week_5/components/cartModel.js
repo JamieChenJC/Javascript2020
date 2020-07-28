@@ -77,7 +77,7 @@ Vue.component('cartModelTemplate', {
                 this.cart.totalPrice = 0;
                 // 累加總金額
                 this.cart.list.forEach((item) => {
-                    this.cart.totalPrice += item.product.price;
+                    this.cart.totalPrice += (item.product.price * item.quantity);
                 });
                 this.$bus.$emit('updataCartCount', this.cart.list.length);
                 this.$bus.$emit('cartLoging', false);
