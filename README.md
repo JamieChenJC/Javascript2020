@@ -9,3 +9,5 @@
 [第四週] 主線任務 [Vue 與 API 串接](https://jamiechenjc.github.io/Javascript2020/week_4/products/login.html)
 
 [第五週] 主線任務 [表單驗證](https://jamiechenjc.github.io/Javascript2020/week_5/products/index.html)
+
+[第六週] 主線任務 [Vue Router](https://jamiechenjc.github.io/Javascript2020/week_6/)
